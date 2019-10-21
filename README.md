@@ -1,3 +1,3 @@
 # canvas-painting
-GO! painting guys
-Tis is my pait. I tis paint write in the programming language JavaScript.
+GO! painting guys.
+This is my paint. I this paint write in the programming language JavaScript.
