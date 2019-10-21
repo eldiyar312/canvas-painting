@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>canvas</title>
+</head>
+
+<body>
+  <input type="number" id="circle" style="position: absolute;" placeholder="введите число от 0-1000">
+  <input type="reset" value="clear" id="clear">
+  <input type="color" name="color" id="color">
+  <div class="hint">
+    <pre>Комбинации клавишь:
+1.Сохранить нарисованное(S)
+2.Вывести сохранённое(R)
+3.Очистка(C)</pre>
+  </div>
+  <canvas id="canvas">your browser dont working with canvas. I`m sorry</canvas>
+
+  <script>
+    var cnv = document.getElementById('canvas'),
+      ctx = cnv.getContext('2d'),
+      circ = document.getElementById('circle'),
+      savedCoords = [],
+      color = document.getElementById('color'),
+      mouse = false;
+
+    cnv.width = window.innerWidth;
+    cnv.height = window.innerHeight;
+
+    //Будущий код!!!
+    // ctx.beginPath();
+    // ctx.scale(2,2);
+    // ctx.moveTo(100, 100);
+    // ctx.lineTo(50, 150);
+    // ctx.lineTo(150, 150);
+    // ctx.closePath();
+    // ctx.fill();
+
+    //прямоугольник
+    // ctx.beginPath();
+    // ctx.fillRect(c.clientX, c.clientY, 20, 20);
+    // ctx.fill();
+
+    //text background gradient
+    // var grad = ctx.createRadialGradient(75, 50, 0, 50, 50, 100);
+    // grad.addColorStop('.50', 'red');
+    // grad.addColorStop('.70', 'green');
+    // grad.addColorStop('.30', 'blue');
+    // ctx.fillStyle = grad;
+    // ctx.font = '30px sans-serif';
+    // // ctx.textAlign ='center'; 
+    // ctx.fillText('Eldiar312', 100, 100);
+    //Будущий код!!!
+
+
+
+    //click clear button function!!!
+    document.getElementById('clear').addEventListener('click', function () {
+      clear();
+    });
+    //click clear button function!!!
+
+
+
+    //FUNCTiON!!! комбинация клавишь
+
+    //clear!!!
+    function clear() {
+      ctx.fillStyle = 'white';
+      ctx.fillRect(0, 0, cnv.width, cnv.height);
+
+      ctx.beginPath();
+      ctx.fillStyle = color;
+    };
+    //clear!!!
+
+    //save!!!
+    function save() {
+      localStorage.setItem('savedCoords', JSON.stringify(savedCoords));
+    };
+    //save!!!
+    
+    //saved Color
+    function savedColor() {
+      localStorage.setItem('savedColor', color.value); 
+    };
+    //saved Color
+
+    //saved Circle Size
+    function cirlceSize() {
+      localStorage.setItem('sevedCirlceSize', circ.value);
+    };
+    //saved Circle Size
+
+    //play saved coords!!!
+    function play() {
+      var timer = setInterval(function () {
+        if (!savedCoords.length) {
+          clearInterval(timer);
+          ctx.beginPath();
+          return;
+        };
+
+        var crd = savedCoords.shift(),
+          c = {
+            clientX: crd['0'],
+            clientY: crd['1']
+          };
+
+        ctx.strokeStyle = localStorage.getItem('savedColor');
+        ctx.lineWidth = localStorage.getItem('sevedCirlceSize') * 2;
+        ctx.lineTo(c.clientX, c.clientY);
+        ctx.stroke();
+
+        ctx.fillStyle = localStorage.getItem('savedColor');
+        ctx.beginPath();
+        ctx.arc(c.clientX, c.clientY, localStorage.getItem('sevedCirlceSize'), 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(c.clientX, c.clientY);
+      }, 5);
+    };
+    //play saved coords!!!
+
+    //FUNCTiON!!! комбинация клавишь
+
+
+
+
+    //комбинация клавишь
+    document.addEventListener('keydown', function (k) {
+      //sved coords
+      if (k.keyCode == 83) {
+        save();
+        savedColor();
+        cirlceSize();
+        console.log('savedCoords');
+        console.log('savedColor');
+      };
+
+      //play!!! saved coords
+      if (k.keyCode == 82) {
+        savedCoords = JSON.parse(localStorage.getItem('savedCoords'));
+        localStorage.getItem('savedColor');
+        localStorage.getItem('sevedCirlceSize');
+        clear();
+        play();
+        console.log('playing');
+      };
+
+      //clear code
+      if (k.keyCode == 67) {
+        clear();
+        console.log('clear');
+      };
+    });
+    //комбинация клавишь
+
+
+
+
+    //рисование
+    circ.addEventListener("keyup", function () {
+
+      //mouse code
+      cnv.addEventListener('mousedown', function () {
+        mouse = true;
+      });
+      cnv.addEventListener('mouseup', function () {
+        mouse = false;
+        savedCoords.push('mouseUp');
+        ctx.beginPath();
+      });
+      //mouse code
+
+      cnv.addEventListener('mousemove', function (c) {
+        if (mouse) {
+
+          savedCoords.push([c.clientX, c.clientY]);
+
+          ctx.strokeStyle = color.value;
+          ctx.lineWidth = circ.value * 2;
+          ctx.lineTo(c.clientX, c.clientY);
+          ctx.stroke();
+
+          ctx.fillStyle = color.value;
+          ctx.beginPath();
+          ctx.arc(c.clientX, c.clientY, circ.value, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.beginPath();
+          ctx.moveTo(c.clientX, c.clientY);
+        };
+      });
+    });
+  </script>
+
+
+
+
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    input,
+    .hint {
+      position: absolute;
+    }
+
+    #color {
+      right: 0;
+    }
+
+    #clear {
+      left: 0;
+    }
+
+    #circle {
+      left: 50%;
+    }
+
+    #canvas {
+      margin: 0px;
+      display: block;
+    }
+
+    .hint {
+      bottom: 0;
+      left: 0;
+    }
+  </style>
+</body>
+
+</html>
