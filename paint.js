@@ -42,8 +42,9 @@ cnv.height = window.innerHeight;
 
 
 
-//click clear button function!!!
+//clear button function!!!
 clearInput.addEventListener('click', () => clear() )
+//change pacil
 circle.addEventListener('keyup', () => pancil = circle.value )
 
 
@@ -73,7 +74,7 @@ function cirlceSize() {
 
 //play saved coords!!!
 function play() {
-  var timer = setInterval(() => {
+  const timer = setInterval(() => {
     if ( !savedCoords.length ) {
       clearInterval(timer);
       ctx.beginPath();
@@ -107,27 +108,27 @@ function play() {
 document.addEventListener('keydown', ( k ) => {
   //sved coords
   if ( k.keyCode == 83 ) {
-  save()
-  savedColor()
-  cirlceSize()
-  console.log('savedCoords')
-  console.log('savedColor')
+    save()
+    savedColor()
+    cirlceSize()
+    console.log('savedCoords')
+    console.log('savedColor')
   }
 
   //play!!! saved coords
   if ( k.keyCode == 82 ) {
-  savedCoords = JSON.parse(localStorage.getItem('savedCoords'))
-  localStorage.getItem('savedColor')
-  localStorage.getItem('sevedCirlceSize')
-  clear()
-  play()
-  console.log('playing')
+    savedCoords = JSON.parse(localStorage.getItem('savedCoords'))
+    localStorage.getItem('savedColor')
+    localStorage.getItem('sevedCirlceSize')
+    clear()
+    play()
+    console.log('playing')
   }
 
   //clear code
   if ( k.keyCode == 67 ) {
-  clear()
-  console.log('clear')
+    clear()
+    console.log('clear')
   }
 });
 //комбинация клавишь
@@ -137,9 +138,7 @@ document.addEventListener('keydown', ( k ) => {
 
 
 //mouse code
-cnv.addEventListener('mousedown', () => {
-  mouse = true
-})
+cnv.addEventListener('mousedown', () => mouse = true )
 
 cnv.addEventListener('mouseup', () => {
   mouse = false
